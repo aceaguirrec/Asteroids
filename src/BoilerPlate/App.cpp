@@ -1,6 +1,9 @@
 #include "App.hpp"
 #include <iostream>
 #include <algorithm>
+#include "Palette.h"
+#include "MathUtilities.h"
+#include "Player.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -10,6 +13,8 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+	Player spaceship = Player();
+	float movement_speed = 25.0f;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -80,6 +85,27 @@ namespace Engine
 	{		
 		switch (keyBoardEvent.keysym.scancode)
 		{
+		case SDL_SCANCODE_W:
+			SDL_Log("Going up.");
+			spaceship.Move(Vector2(0, movement_speed));
+			break;
+
+		case SDL_SCANCODE_A:
+			SDL_Log("Going down.");
+			spaceship.Move(Vector2(0, -movement_speed));
+			break;
+
+		case SDL_SCANCODE_S:
+			SDL_Log("Steering left.");
+			spaceship.Move(Vector2(-movement_speed, 0));
+			break;
+
+		case SDL_SCANCODE_D:
+			SDL_Log("Steering right.");
+			spaceship.Move(Vector2(movement_speed, 0));
+			break;
+
+
 		default:			
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
