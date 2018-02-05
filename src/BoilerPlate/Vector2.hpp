@@ -21,7 +21,7 @@ struct Vector2 {
 
 
 	/*==============================
-	* Functions
+	* Length functions
 	*==============================*/
 	float vLength() const;
 	float squaredLength() const;

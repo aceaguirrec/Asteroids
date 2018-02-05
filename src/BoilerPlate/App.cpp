@@ -13,6 +13,8 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
+
+	//generates player and sets default movement speed
 	Player spaceship = Player();
 	float movement_speed = 25.0f;
 
@@ -81,6 +83,8 @@ namespace Engine
 		return true;
 	}
 
+
+	//configures app to recognize and react to keyboard input
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
 	{		
 		switch (keyBoardEvent.keysym.scancode)
@@ -92,12 +96,12 @@ namespace Engine
 
 		case SDL_SCANCODE_A:
 			SDL_Log("Going down.");
-			spaceship.Move(Vector2(0, -movement_speed));
+			spaceship.Move(Vector2(-movement_speed, 0));
 			break;
 
 		case SDL_SCANCODE_S:
 			SDL_Log("Steering left.");
-			spaceship.Move(Vector2(-movement_speed, 0));
+			spaceship.Move(Vector2(0, -movement_speed));
 			break;
 
 		case SDL_SCANCODE_D:
@@ -152,14 +156,8 @@ namespace Engine
 	{
 		glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(50.0, 50.0);
-		glVertex2f(50.0, -50.0);
-		glVertex2f(-50.0, -50.0);
-		glVertex2f(-50.0, 50.0);
-		glEnd();
-
+		spaceship.Render();
+								//renders game and player
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

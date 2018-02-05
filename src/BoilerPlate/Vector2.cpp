@@ -1,6 +1,10 @@
 #include "Vector2.hpp"
 #include <cmath>
 
+
+/*=================
+* Constructors
+=================*/
 Vector2::Vector2(){
 	
 	x = 0.0f;
@@ -29,6 +33,9 @@ Vector2::Vector2(float axes){
 
 }
 
+/*=================
+* Length functions
+=================*/
 float Vector2::vLength() const{
 	
 	float vectorLength;
@@ -57,6 +64,9 @@ float Vector2::normalize(){
 	return length;
 }
 
+/*=================
+* Overloaded operators
+=================*/
 Vector2 & Vector2::operator=(const Vector2 & rhs){
 	
 	x = rhs.x;

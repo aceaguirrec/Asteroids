@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Palette.h"
 
+//initial player position
 Player::Player(){
 
 	position.x = 0;
@@ -15,11 +16,13 @@ void Player::Update(){
 
 }
 
+//player movement function
 void Player::Move(Vector2 & newPosition){
 
 	position += newPosition;
 }
 
+//player render function
 void Player::Render(){
 
 	Palette colors = Palette();

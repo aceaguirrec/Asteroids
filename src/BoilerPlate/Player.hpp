@@ -1,8 +1,12 @@
 #pragma once
 #include "Vector3.hpp"
 
+/*=================
+* Player 
+*declaration
+=================*/
 class Player {
-
+					
 private:
 	Vector2 position;
 

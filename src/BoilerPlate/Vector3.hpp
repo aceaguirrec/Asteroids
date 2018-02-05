@@ -23,7 +23,7 @@ struct Vector3 {
 
 
 	/*==============================
-	* Functions
+	* Length functions
 	*==============================*/
 	float vLength() const;
 	float squaredLength() const;

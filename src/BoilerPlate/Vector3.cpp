@@ -1,6 +1,9 @@
 #include "Vector3.hpp"
 #include <cmath>
 
+/*=================
+* Constructors
+=================*/
 Vector3::Vector3(){
 
 	x = 0.0f;
@@ -33,6 +36,9 @@ Vector3::Vector3(const Vector2 & v){
 	length = vLength();
 }
 
+/*=================
+* Length functions
+=================*/
 float Vector3::vLength() const{
 
 	float vectorLength;
@@ -61,6 +67,9 @@ float Vector3::normalize(){
 	return length;
 }
 
+/*=================
+* Overloaded operators
+=================*/
 Vector3 & Vector3::operator=(const Vector3 & rhs){
 
 	x = rhs.x;
