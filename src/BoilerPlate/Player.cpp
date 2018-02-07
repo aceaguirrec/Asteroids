@@ -31,9 +31,10 @@ void Player::Render(){
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBegin(GL_LINE_LOOP);
-	glVertex2f(50.0 + position.x, 50.0 + position.y);
-	glVertex2f(50.0 + position.x, -50.0 + position.y);
-	glVertex2f(-50.0 + position.x, -50.0 + position.y);
-	glVertex2f(-50.0 + position.x, 50.0 + position.y);
+	glVertex2f(0.0 + position.x, 20.0 + position.y);
+	glVertex2f(12.0 + position.x, -10.0 + position.y);
+	glVertex2f(6.0 + position.x, -4.0 + position.y);
+	glVertex2f(-6.0 + position.x, -4.0 + position.y);
+	glVertex2f(-12.0 + position.x, -10.0 + position.y);
 	glEnd();
 }

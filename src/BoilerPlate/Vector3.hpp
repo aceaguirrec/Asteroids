@@ -6,9 +6,7 @@ struct Vector3 {
 	/*==============================
 	* Members
 	*==============================*/
-	float x;
-	float y;
-	float z;
+	float x, y, z;
 	float length;
 
 

@@ -6,8 +6,7 @@ struct Vector2 {
 	/*==============================
 	* Members
 	*==============================*/
-	float x;
-	float y;
+	float x, y;
 	float length;
 
 

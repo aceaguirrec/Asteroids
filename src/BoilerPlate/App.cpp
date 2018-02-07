@@ -16,7 +16,7 @@ namespace Engine
 
 	//generates player and sets default movement speed
 	Player spaceship = Player();
-	float movement_speed = 25.0f;
+	float movement_speed = 5.0f;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)

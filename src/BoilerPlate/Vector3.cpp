@@ -49,10 +49,10 @@ float Vector3::vLength() const{
 
 float Vector3::squaredLength() const{
 
-	float vectorLength;
-	vectorLength = (pow(x, 2.0) + pow(y, 2.0) + pow(z, 2.0));
+	float sqLength;
+	sqLength = (pow(x, 2.0) + pow(y, 2.0) + pow(z, 2.0));
 
-	return vectorLength;
+	return sqLength;
 }
 
 float Vector3::normalize(){
@@ -188,6 +188,7 @@ bool Vector3::operator!=(const Vector3 & rhs){
 }
 
 Vector3 & operator*(float n, const Vector3 & rhs){
+
 	float xAx, yAx, zAx;
 
 	xAx = n * rhs.x;
