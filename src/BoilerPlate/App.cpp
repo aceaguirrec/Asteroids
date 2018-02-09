@@ -91,17 +91,17 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:
 			SDL_Log("Going up.");
-			spaceship.Move(Vector2(0, movement_speed));
+			spaceship.moveForward(Vector2(0, movement_speed));
 			break;
 
 		case SDL_SCANCODE_A:
 			SDL_Log("Going down.");
-			spaceship.Move(Vector2(-movement_speed, 0));
+			spaceship.rotateLeft();
 			break;
 
 		case SDL_SCANCODE_S:
 			SDL_Log("Steering left.");
-			spaceship.Move(Vector2(0, -movement_speed));
+			spaceship.rotateRight();
 			break;
 
 		case SDL_SCANCODE_D:

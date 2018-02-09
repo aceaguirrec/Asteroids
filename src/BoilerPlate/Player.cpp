@@ -16,11 +16,6 @@ void Player::Update(){
 
 }
 
-//player movement function
-void Player::Move(Vector2 & newPosition){
-
-	position += newPosition;
-}
 
 //player render function
 void Player::Render(){
@@ -37,4 +32,22 @@ void Player::Render(){
 	glVertex2f(-6.0 + position.x, -4.0 + position.y);
 	glVertex2f(-12.0 + position.x, -10.0 + position.y);
 	glEnd();
+}
+
+//player movement function
+void Player::moveForward(Vector2& newPos){
+
+	position += newPos;
+}
+
+//player rotation function (to the left from the ship's POV)
+void Player::rotateLeft() {
+
+	glRotatef(10.0f, 0.0f, 0.0f, 1.0f);
+}
+
+//player rotation function (to the right from the ship's POV)
+void Player::rotateRight() {
+
+	glRotatef(10.0f, 0.0f, 0.0f, 1.0f);
 }
