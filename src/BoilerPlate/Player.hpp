@@ -13,6 +13,10 @@ private:
 public:
 	Player();
 	void Update();
-	void Move(Vector2& newPosition);
 	void Render();
+	void moveForward(Vector2& newPosition);
+	void rotateLeft(void); 
+	void rotateRight(void);
+
+
 };

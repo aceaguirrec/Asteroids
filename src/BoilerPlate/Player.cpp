@@ -16,10 +16,20 @@ void Player::Update(){
 
 }
 
-//player movement function
-void Player::Move(Vector2 & newPosition){
+//fwd movement function
+void Player::moveForward(Vector2 & newPosition){
 
 	position += newPosition;
+}
+
+void Player::rotateLeft() {
+										//rotation to the left function
+	glRotatef(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Player::rotateRight() {
+										//rotation to the right function
+	glRotatef(1.0, -1.0f, -1.0f, -1.0f);
 }
 
 //player render function

@@ -89,24 +89,24 @@ namespace Engine
 	{		
 		switch (keyBoardEvent.keysym.scancode)
 		{
-		case SDL_SCANCODE_W:
+		case SDL_SCANCODE_W:				//moves player ship forward
 			SDL_Log("Going up.");
-			spaceship.Move(Vector2(0, movement_speed));
+			spaceship.moveForward(Vector2(0, movement_speed));
 			break;
 
-		case SDL_SCANCODE_A:
-			SDL_Log("Going down.");
-			spaceship.Move(Vector2(-movement_speed, 0));
+		case SDL_SCANCODE_A:			//steers player ship left
+			SDL_Log("Steering left.");
+			spaceship.rotateLeft();
 			break;
 
 		case SDL_SCANCODE_S:
-			SDL_Log("Steering left.");
-			spaceship.Move(Vector2(0, -movement_speed));
+			SDL_Log("Applying brakes");
+			spaceship.moveForward(Vector2(0, -movement_speed));
 			break;
 
 		case SDL_SCANCODE_D:
 			SDL_Log("Steering right.");
-			spaceship.Move(Vector2(movement_speed, 0));
+			spaceship.rotateRight();
 			break;
 
 
