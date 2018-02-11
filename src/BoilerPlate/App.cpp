@@ -91,22 +91,28 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:				//moves player ship forward
 			SDL_Log("Going up.");
-			spaceship.moveForward(Vector2(0, movement_speed));
+			spaceship.moveForward(Vector2(0.0f, movement_speed));
+			spaceship.activateThruster = true;
 			break;
 
-		case SDL_SCANCODE_A:			//steers player ship left
+		case SDL_SCANCODE_A:			//moves player ship to the left (for now)
 			SDL_Log("Steering left.");
-			spaceship.rotateLeft();
+			spaceship.moveForward(Vector2(-movement_speed, 0.0f));
+			spaceship.activateThruster = false;
+			//spaceship.rotateLeft();
 			break;
 
-		case SDL_SCANCODE_S:
+		case SDL_SCANCODE_S:			//moves player ship backwards (for now)
 			SDL_Log("Applying brakes");
-			spaceship.moveForward(Vector2(0, -movement_speed));
+			spaceship.moveForward(Vector2(0.0f, -movement_speed));
+			spaceship.activateThruster = false;
 			break;
 
-		case SDL_SCANCODE_D:
+		case SDL_SCANCODE_D:			//moves player ship to the right (for now)
 			SDL_Log("Steering right.");
-			spaceship.rotateRight();
+			spaceship.moveForward(Vector2(movement_speed, 0.0f));
+			spaceship.activateThruster = false;
+			//spaceship.rotateRight();
 			break;
 
 
@@ -120,9 +126,16 @@ namespace Engine
 	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
+		case SDL_SCANCODE_W:			//ensures thruster disappears when W key is lifted
+			spaceship.activateThruster = false;
+			break;
+
+
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
+
+
 		default:
 			//DO NOTHING
 			break;

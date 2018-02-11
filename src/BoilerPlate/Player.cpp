@@ -32,6 +32,15 @@ void Player::rotateRight() {
 	glRotatef(1.0, -1.0f, -1.0f, -1.0f);
 }
 
+void Player::thruster() {
+
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(-6.0f, -7.0f);
+	glVertex2f(6.0f, -7.0f);
+	glVertex2f(0.0f, -15.0f);
+	glEnd();
+}
+
 //player render function
 void Player::Render(){
 
@@ -47,4 +56,6 @@ void Player::Render(){
 	glVertex2f(-6.0 + position.x, -4.0 + position.y);
 	glVertex2f(-12.0 + position.x, -10.0 + position.y);
 	glEnd();
+
+	if (activateThruster == true) thruster();		//checks if thruster is active and draws it if true
 }

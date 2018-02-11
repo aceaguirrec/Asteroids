@@ -1,5 +1,6 @@
 #pragma once
-#include "Vector3.hpp"
+#include "Vector2.hpp"
+
 
 /*=================
 * Player 
@@ -17,6 +18,8 @@ public:
 	void moveForward(Vector2& newPosition);
 	void rotateLeft(void); 
 	void rotateRight(void);
+	bool activateThruster;
+	void thruster();
 
 
 };
