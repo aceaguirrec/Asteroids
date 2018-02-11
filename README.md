@@ -1,2 +1,2 @@
 # Asteroids
-Atari 1970 Asteroids game project
+Atari 1979 Asteroids game project
