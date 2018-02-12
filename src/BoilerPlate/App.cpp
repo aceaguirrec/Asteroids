@@ -161,6 +161,7 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 		spaceship.Render();
 								//renders game and player
+
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
