@@ -5,10 +5,14 @@
 #include "Palette.h"
 
 //define window border constant values
-const int windowBottom = -320;
-const int windowCeiling = 320;
-const int windowLeftBorder = -568;
-const int windowRightBorder = 568;
+const int windowBottom = -180;
+const int windowCeiling = 180;
+const int windowLeftBorder = -500;
+const int windowRightBorder = 500;
+
+//define rotation angle constant values
+float clockwiseAngle = -1.0f;
+float counterClockwiseAngle = 1.0f;
 
 //initial player position
 Player::Player(){
@@ -22,8 +26,8 @@ void Player::Update(){
 
 }
 
-//player movement function, continuosly warping
-void Player::move(Vector2& newPosition) {
+//fwd movement function, continuosly warping
+void Player::moveForward(Vector2 & newPosition){
 
 	position += newPosition;
 
@@ -31,29 +35,30 @@ void Player::move(Vector2& newPosition) {
 	position.y = Warp(position.y, windowBottom, windowCeiling);
 }
 
-//fwd movement function
-void Player::moveForward(Vector2 & newPos){
-
-}
-
 void Player::rotateLeft() {
 										//rotation to the left function
+	//glRotatef(counterClockwiseAngle, 0.0f, 0.0f, 1.0f);
 	
 }
 
 void Player::rotateRight() {
 										//rotation to the right function
+	//glRotatef(clockwiseAngle, 0.0f, 0.0f, 1.0f);}
 	
-}
-
 
 //player render function
 void Player::Render(){
+
+	glLoadIdentity();
+
+	//glRotatef(clockwiseAngle, 0.0f, 0.0f, 1.0f);
+	//glRotatef(counterClockwiseAngle, 0.0f, 0.0f, 1.0f);
 
 	Palette colors = Palette();
 	Color bgColor = colors.getPurple();
 	glClearColor(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha());
 	glClear(GL_COLOR_BUFFER_BIT);
+	
 
 	glBegin(GL_LINE_LOOP);
 	glVertex2f(0.0 + position.x, 20.0 + position.y);

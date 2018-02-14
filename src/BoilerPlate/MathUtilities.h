@@ -1,6 +1,9 @@
 #pragma once
 class MathUtilities {
 public:
+
+	float const Pi = 3.14159265; //constant representing Pi
+
 	int nearestInt(float x); //gets nearest integer to a float
 
 	int nearestEvenInt(float x); //gets nearest even integer to a float
@@ -95,6 +98,5 @@ public:
 
 		return x;
 	}
-
 
 };
