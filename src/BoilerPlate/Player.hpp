@@ -16,7 +16,7 @@ public:
 	void Update();
 	void Render();
 	float Warp(float shipPosition, int borderMinValue, int borderMaxValue);
-	void moveForward(Vector2& newPos);
+	void moveForward(Vector2& newPosition);
 	void rotateLeft(void);
 	void rotateRight(void);
 	bool isThrusterActive = false;

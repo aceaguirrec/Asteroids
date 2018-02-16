@@ -1,8 +1,10 @@
-#include "Vector3.hpp"
+#include <vector>
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 #include "Player.hpp"
 #include "Palette.h"
+#include "MathUtilities.h"
+#include "Vector3.hpp"
 
 //define window border constant values
 const int windowBottom = -180;
@@ -10,15 +12,20 @@ const int windowCeiling = 180;
 const int windowLeftBorder = -500;
 const int windowRightBorder = 500;
 
-//define rotation angle constant values
-float clockwiseAngle = -1.0f;
-float counterClockwiseAngle = 1.0f;
+//define orientation angle value
+float orientationAngle = 0.0f;
+
+//define movement speed constant value
+const float movementSpeed = 5.0f;
+
 
 //initial player position
 Player::Player(){
 
 	position.x = 0;
 	position.y = 0;
+
+	mass = 1.0f;
 }
 
 void Player::Update(){
@@ -29,7 +36,15 @@ void Player::Update(){
 //fwd movement function, continuosly warping
 void Player::moveForward(Vector2 & newPosition){
 
-	position += newPosition;
+	MathUtilities MathUtilities;
+	float xAx, yAx;
+
+	xAx = (movementSpeed * sinf(MathUtilities.degsToRads(orientationAngle)));
+	yAx = (movementSpeed * cosf(MathUtilities.degsToRads(orientationAngle)));
+
+	position.x += xAx;
+	position.y += yAx;
+	
 
 	position.x = Warp(position.x, windowLeftBorder, windowRightBorder);
 	position.y = Warp(position.y, windowBottom, windowCeiling);
@@ -37,22 +52,23 @@ void Player::moveForward(Vector2 & newPosition){
 
 void Player::rotateLeft() {
 										//rotation to the left function
-	//glRotatef(counterClockwiseAngle, 0.0f, 0.0f, 1.0f);
+	orientationAngle += 2.0f;
 	
 }
 
 void Player::rotateRight() {
 										//rotation to the right function
-	//glRotatef(clockwiseAngle, 0.0f, 0.0f, 1.0f);}
-	
+	orientationAngle -= 2.0f;
+}
 
 //player render function
-void Player::Render(){
+void Player::Render() {
 
 	glLoadIdentity();
 
-	//glRotatef(clockwiseAngle, 0.0f, 0.0f, 1.0f);
-	//glRotatef(counterClockwiseAngle, 0.0f, 0.0f, 1.0f);
+
+	glRotatef(orientationAngle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(position.x, position.y, 0.0f);
 
 	Palette colors = Palette();
 	Color bgColor = colors.getPurple();
@@ -67,6 +83,8 @@ void Player::Render(){
 	glVertex2f(-6.0 + position.x, -4.0 + position.y);
 	glVertex2f(-12.0 + position.x, -10.0 + position.y);
 	glEnd();
+
+	
 
 }
 
