@@ -27,7 +27,7 @@ public:
 	void RotateLeft(void);
 	void RotateRight(void);
 	void IgniteThruster(bool);
-	bool IsThrusterActive;
+	bool IsThrusterActive = false;
 	void DrawThruster(void);
 	void SetEntityPoints(void) override;
 	void SetThrusterPoints(void);
