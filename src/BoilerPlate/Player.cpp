@@ -13,7 +13,8 @@ const int windowLeftBorder = -500;
 const int windowRightBorder = 500;
 
 //define orientation angle value
-float orientationAngle = 0.0f;
+float orientationSpeed = 5.0f;
+float orientationAngle;
 
 //define movement speed constant value
 const float movementSpeed = 5.0f;
@@ -34,29 +35,25 @@ void Player::Update(){
 }
 
 //fwd movement function, continuosly warping
-void Player::moveForward(Vector2 & newPosition){
+void Player::MoveForward(Vector2 & newPosition){
 
 	MathUtilities MathUtilities;
-	float xAx, yAx;
 
-	xAx = (movementSpeed * sinf(MathUtilities.degsToRads(orientationAngle)));
-	yAx = (movementSpeed * cosf(MathUtilities.degsToRads(orientationAngle)));
-
-	position.x += xAx;
-	position.y += yAx;
+	position.x -= movementSpeed * sinf(MathUtilities.degsToRads(orientationAngle));
+	position.y += (movementSpeed * cosf(MathUtilities.degsToRads(orientationAngle)));
 	
 
 	position.x = Warp(position.x, windowLeftBorder, windowRightBorder);
 	position.y = Warp(position.y, windowBottom, windowCeiling);
 }
 
-void Player::rotateLeft() {
+void Player::RotateLeft() {
 										//rotation to the left function
 	orientationAngle += 2.0f;
 	
 }
 
-void Player::rotateRight() {
+void Player::RotateRight() {
 										//rotation to the right function
 	orientationAngle -= 2.0f;
 }
@@ -66,9 +63,9 @@ void Player::Render() {
 
 	glLoadIdentity();
 
-
-	glRotatef(orientationAngle, 0.0f, 0.0f, 1.0f);
 	glTranslatef(position.x, position.y, 0.0f);
+	glRotatef(orientationAngle, 0.0f, 0.0f, 1.0f);
+	
 
 	Palette colors = Palette();
 	Color bgColor = colors.getPurple();

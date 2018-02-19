@@ -91,23 +91,23 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:				//moves player ship forward
 			SDL_Log("Moving forward.");
-			spaceship.moveForward(Vector2(0.0f, movement_speed));
+			spaceship.MoveForward(Vector2(0.0f, movement_speed));
 			spaceship.isThrusterActive = true;
 			break;
 
 		case SDL_SCANCODE_A:			//rotates player ship left from ship's POV
 			SDL_Log("Steering left.");
-			spaceship.rotateLeft();
+			spaceship.RotateLeft();
 			break;
 
 		case SDL_SCANCODE_S:			//moves player ship backwards (for now)
 			SDL_Log("Applying brakes");
-			spaceship.moveForward(Vector2(0.0f, -movement_speed));
+			spaceship.MoveForward(Vector2(0.0f, -movement_speed));
 			break;
 
 		case SDL_SCANCODE_D:			//rotates player ship right from ship's POV
 			SDL_Log("Steering left.");
-			spaceship.rotateRight();
+			spaceship.RotateRight();
 			break;
 
 
