@@ -1,4 +1,9 @@
 #pragma once
+
+#ifndef MATHUTILITIES_H
+#define MATHUTILITIES_H
+
+
 class MathUtilities {
 public:
 
@@ -100,3 +105,4 @@ public:
 	}
 
 };
+#endif // !MATHUTILITIES_H

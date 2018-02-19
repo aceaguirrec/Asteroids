@@ -14,9 +14,6 @@ namespace Engine
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
-	//generates player and sets default movement speed
-	Player spaceship = Player();
-	float movement_speed = 5.0f;
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -28,6 +25,7 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
+		m_spaceship = new Player();
 	}
 
 	App::~App()
@@ -91,23 +89,22 @@ namespace Engine
 		{
 		case SDL_SCANCODE_W:				//moves player ship forward
 			SDL_Log("Moving forward.");
-			spaceship.MoveForward(Vector2(0.0f, movement_speed));
-			spaceship.isThrusterActive = true;
+			m_spaceship->MoveForward();
+			m_spaceship->IgniteThruster(true);
 			break;
 
 		case SDL_SCANCODE_A:			//rotates player ship left from ship's POV
 			SDL_Log("Steering left.");
-			spaceship.RotateLeft();
+			m_spaceship->RotateLeft();
 			break;
 
 		case SDL_SCANCODE_S:			//moves player ship backwards (for now)
 			SDL_Log("Applying brakes");
-			spaceship.MoveForward(Vector2(0.0f, -movement_speed));
 			break;
 
 		case SDL_SCANCODE_D:			//rotates player ship right from ship's POV
 			SDL_Log("Steering left.");
-			spaceship.RotateRight();
+			m_spaceship->RotateRight();
 			break;
 
 
@@ -124,6 +121,11 @@ namespace Engine
 
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
+			break;
+
+
+		case SDL_SCANCODE_W:
+			m_spaceship->IgniteThruster(false);
 			break;
 
 
@@ -160,7 +162,7 @@ namespace Engine
 	{
 		glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		spaceship.Render();
+		m_spaceship->Render();
 								//renders game and player
 
 		SDL_GL_SwapWindow(m_mainWindow);

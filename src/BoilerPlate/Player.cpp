@@ -1,32 +1,27 @@
-#include <vector>
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
 #include "Player.hpp"
 #include "Palette.h"
-#include "MathUtilities.h"
-#include "Vector3.hpp"
+
 
 //define window border constant values
-const int windowBottom = -180;
-const int windowCeiling = 180;
-const int windowLeftBorder = -500;
-const int windowRightBorder = 500;
+const int windowBottom = -380.0f;
+const int windowCeiling = 380.0f;
+const int windowLeftBorder = -600.0f;
+const int windowRightBorder = 600.0f;
 
-//define orientation angle value
-float orientationSpeed = 5.0f;
-float orientationAngle;
+//define rotation speed value
+float rotationSpeed = 4.5f;
 
 //define movement speed constant value
-const float movementSpeed = 5.0f;
+const float movementSpeed = 8.0f;
 
+MathUtilities maths;
 
-//initial player position
+using namespace std;
+
 Player::Player(){
 
-	position.x = 0;
-	position.y = 0;
-
-	mass = 1.0f;
+	SetEntityPoints();
+	SetThrusterPoints();
 }
 
 void Player::Update(){
@@ -34,37 +29,72 @@ void Player::Update(){
 
 }
 
+void Player::SetEntityPoints() {
+
+	entityPoints.push_back(Vector2(0.0f, 20.0f));
+	entityPoints.push_back(Vector2(12.0f, -10.0f));
+	entityPoints.push_back(Vector2(6.0f, -4.0f));
+	entityPoints.push_back(Vector2(-6.0f, -4.0f));
+	entityPoints.push_back(Vector2(-12.0f, -10.0f));
+
+}
+
+void Player::SetThrusterPoints() {
+
+	thrusterBoostPts.push_back((Vector2(6.0f, -4.0f)));
+	thrusterBoostPts.push_back(Vector2(-6.0f, -4.0f));
+	thrusterBoostPts.push_back(Vector2(0.0f, -14.0f));
+
+
+}
 //fwd movement function, continuosly warping
-void Player::MoveForward(Vector2 & newPosition){
+void Player::MoveForward(){
 
-	MathUtilities MathUtilities;
-
-	position.x -= movementSpeed * sinf(MathUtilities.degsToRads(orientationAngle));
-	position.y += (movementSpeed * cosf(MathUtilities.degsToRads(orientationAngle)));
+	entityPosition->x -= movementSpeed * sinf(maths.degsToRads(entityOrientationAngle));
+	entityPosition->y += (movementSpeed * cosf(maths.degsToRads(entityOrientationAngle)));
 	
 
-	position.x = Warp(position.x, windowLeftBorder, windowRightBorder);
-	position.y = Warp(position.y, windowBottom, windowCeiling);
+	entityPosition->x = Warp(entityPosition->x, windowLeftBorder, windowRightBorder);
+	entityPosition->y = Warp(entityPosition->y, windowBottom, windowCeiling);
 }
 
 void Player::RotateLeft() {
 										//rotation to the left function
-	orientationAngle += 2.0f;
+	entityOrientationAngle += rotationSpeed;
 	
 }
 
 void Player::RotateRight() {
 										//rotation to the right function
-	orientationAngle -= 2.0f;
+	entityOrientationAngle -= rotationSpeed;
+}
+
+void Player::IgniteThruster(bool thrustStatus){
+
+	IsThrusterActive = thrustStatus;
+}
+
+void Player::DrawThruster() {
+
+	if (IsThrusterActive) {
+
+		glBegin(GL_LINE_LOOP);
+		for (int i = 0; i < thrusterBoostPts.size(); i++) {
+
+			glVertex2f(thrusterBoostPts[i].x, thrusterBoostPts[i].y);
+		}
+		glEnd();
+	
+	}
+
 }
 
 //player render function
 void Player::Render() {
 
 	glLoadIdentity();
-
-	glTranslatef(position.x, position.y, 0.0f);
-	glRotatef(orientationAngle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(entityPosition->x, entityPosition->y, 0.0f);
+	glRotatef(entityOrientationAngle, 0.0f, 0.0f, 1.0f);
 	
 
 	Palette colors = Palette();
@@ -72,21 +102,16 @@ void Player::Render() {
 	glClearColor(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha());
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	//draws ship
+	DrawEntity();
 
-	glBegin(GL_LINE_LOOP);
-	glVertex2f(0.0 + position.x, 20.0 + position.y);
-	glVertex2f(12.0 + position.x, -10.0 + position.y);
-	glVertex2f(6.0 + position.x, -4.0 + position.y);
-	glVertex2f(-6.0 + position.x, -4.0 + position.y);
-	glVertex2f(-12.0 + position.x, -10.0 + position.y);
-	glEnd();
-
-	
+	//draws thruster booster
+	DrawThruster();
 
 }
 
 //player screen warping function
-float Player::Warp(float shipPosition, int borderMinValue, int borderMaxValue) {
+float Player::Warp(float shipPosition, float borderMinValue, float borderMaxValue) {
 	/*
 	if player exits screen from (bottom)/(left) of screen
 	player reappears same (x)/(y) position 

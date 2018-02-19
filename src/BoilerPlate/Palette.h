@@ -1,4 +1,8 @@
 #pragma once
+#ifndef PALETTE_H
+#define PALETTE_H
+
+
 #include "Color.h"
 
 static class Palette {
@@ -21,3 +25,4 @@ private:
 	Color orange;
 
 };
+#endif // !PALETTE_H

@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef APP_HPP
 #define APP_HPP
 
@@ -9,6 +10,10 @@
 // Asteroids
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
+
+#include "Palette.h"
+#include "MathUtilities.h"
+#include "Player.hpp"
 
 namespace Engine
 {
@@ -66,7 +71,7 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
-
+		Player*								m_spaceship;
 	};
 }
 #endif /* GAME_HPP */

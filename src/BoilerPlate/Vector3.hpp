@@ -1,4 +1,7 @@
 #pragma once
+
+#ifndef VECTOR3_H
+#define VECTOR3_H
 #include "Vector2.hpp"
 
 struct Vector3 {
@@ -44,3 +47,4 @@ struct Vector3 {
 	friend Vector3& operator *(float n, const Vector3& rhs);
 	friend Vector3& operator *(const Vector3& lhs, float n);
 };
+#endif // !VECTOR3_H_

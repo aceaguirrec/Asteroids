@@ -1,6 +1,9 @@
 #pragma once
-#include "Vector2.hpp"
-#include <vector>
+
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
+
+#include "Entity.hpp"
 
 using namespace std;
 
@@ -8,22 +11,25 @@ using namespace std;
 * Player 
 *declaration
 =================*/
-class Player {
+class Player: public Entity {
 					
 private:
-	Vector2 position;
-	float mass;
 	vector <Vector2> thrusterBoostPts;
 
 public:
 	Player();
 
-	void Update();
-	void Render();
+	void Update(void) override;
+	void Render(void) override;
 
-	float Warp(float shipPosition, int borderMinValue, int borderMaxValue);
-	void MoveForward(Vector2& newPosition);
+	float Warp(float shipPosition, float borderMinValue, float borderMaxValue);
+	void MoveForward(void) override;
 	void RotateLeft(void);
 	void RotateRight(void);
-	bool isThrusterActive;
+	void IgniteThruster(bool);
+	bool IsThrusterActive;
+	void DrawThruster(void);
+	void SetEntityPoints(void) override;
+	void SetThrusterPoints(void);
 };
+#endif // !_PLAYER_H_
