@@ -14,6 +14,10 @@ using namespace std;
 class Player: public Entity {
 					
 private:
+	Vector2* shipPosition;
+	float shipOrientationAngle;
+	float shipMass;
+	vector <Vector2> shipPts;
 	vector <Vector2> thrusterBoostPts;
 
 public:
@@ -29,7 +33,8 @@ public:
 	void IgniteThruster(bool);
 	bool IsThrusterActive = false;
 	void DrawThruster(void);
-	void SetEntityPoints(void) override;
+	void SetShipPoints(void);
+	void DrawShip(void);
 	void SetThrusterPoints(void);
 };
 #endif // !_PLAYER_H_

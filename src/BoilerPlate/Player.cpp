@@ -20,7 +20,10 @@ using namespace std;
 
 Player::Player(){
 
-	SetEntityPoints();
+	shipPosition = new Vector2();
+	shipOrientationAngle = 0.0f;
+	shipMass = 5.0f;
+	SetShipPoints();
 	SetThrusterPoints();
 }
 
@@ -29,13 +32,13 @@ void Player::Update(){
 
 }
 
-void Player::SetEntityPoints() {
+void Player::SetShipPoints() {
 
-	entityPoints.push_back(Vector2(0.0f, 20.0f));
-	entityPoints.push_back(Vector2(12.0f, -10.0f));
-	entityPoints.push_back(Vector2(6.0f, -4.0f));
-	entityPoints.push_back(Vector2(-6.0f, -4.0f));
-	entityPoints.push_back(Vector2(-12.0f, -10.0f));
+	shipPts.push_back(Vector2(0.0f, 20.0f));
+	shipPts.push_back(Vector2(12.0f, -10.0f));
+	shipPts.push_back(Vector2(6.0f, -4.0f));
+	shipPts.push_back(Vector2(-6.0f, -4.0f));
+	shipPts.push_back(Vector2(-12.0f, -10.0f));
 
 }
 
@@ -50,28 +53,39 @@ void Player::SetThrusterPoints() {
 //fwd movement function, continuosly warping
 void Player::MoveForward(){
 
-	entityPosition->x -= movementSpeed * sinf(maths.degsToRads(entityOrientationAngle));
-	entityPosition->y += (movementSpeed * cosf(maths.degsToRads(entityOrientationAngle)));
+	shipPosition->x -= movementSpeed * sinf(maths.degsToRads(shipOrientationAngle));
+	shipPosition->y += (movementSpeed * cosf(maths.degsToRads(shipOrientationAngle)));
 	
 
-	entityPosition->x = Warp(entityPosition->x, windowLeftBorder, windowRightBorder);
-	entityPosition->y = Warp(entityPosition->y, windowBottom, windowCeiling);
+	shipPosition->x = Warp(shipPosition->x, windowLeftBorder, windowRightBorder);
+	shipPosition->y = Warp(shipPosition->y, windowBottom, windowCeiling);
 }
 
 void Player::RotateLeft() {
 										//rotation to the left function
-	entityOrientationAngle += rotationSpeed;
+	shipOrientationAngle += rotationSpeed;
 	
 }
 
 void Player::RotateRight() {
 										//rotation to the right function
-	entityOrientationAngle -= rotationSpeed;
+	shipOrientationAngle -= rotationSpeed;
 }
 
 void Player::IgniteThruster(bool thrustStatus){
 
 	IsThrusterActive = thrustStatus;
+}
+
+void Player::DrawShip() {
+
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < shipPts.size(); i++) {
+
+		glVertex2f(shipPts[i].x, shipPts[i].y);
+	}
+	glEnd();
+
 }
 
 void Player::DrawThruster() {
@@ -93,8 +107,8 @@ void Player::DrawThruster() {
 void Player::Render() {
 
 	glLoadIdentity();
-	glTranslatef(entityPosition->x, entityPosition->y, 0.0f);
-	glRotatef(entityOrientationAngle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(shipPosition->x, shipPosition->y, 0.0f);
+	glRotatef(shipOrientationAngle, 0.0f, 0.0f, 1.0f);
 	
 
 	Palette colors = Palette();
@@ -103,7 +117,7 @@ void Player::Render() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	//draws ship
-	DrawEntity();
+	DrawShip();
 
 	//draws thruster booster
 	DrawThruster();
@@ -111,28 +125,28 @@ void Player::Render() {
 }
 
 //player screen warping function
-float Player::Warp(float shipPosition, float borderMinValue, float borderMaxValue) {
+float Player::Warp(float shipCoordinate, float borderMinValue, float borderMaxValue) {
 	/*
 	if player exits screen from (bottom)/(left) of screen
 	player reappears same (x)/(y) position 
 	from (top)/(right) of screen
 	*/
-	if (shipPosition < borderMinValue) {
+	if (shipCoordinate < borderMinValue) {
 
-		shipPosition = borderMaxValue + (borderMinValue - shipPosition);  
-		return shipPosition;
+		shipCoordinate = borderMaxValue + (borderMinValue - shipCoordinate);  
+		return shipCoordinate;
 	}
 	/*
 	if player exits screen from (top)/(right)
 	player reappears same (x)/(y) position
 	from (bottom)/(left) of screen
 	*/
-	if (shipPosition > borderMaxValue) {
+	if (shipCoordinate > borderMaxValue) {
 	
-		shipPosition = borderMinValue - (shipPosition - borderMaxValue);
-		return shipPosition;
+		shipCoordinate = borderMinValue - (shipCoordinate - borderMaxValue);
+		return shipCoordinate;
 	}
 
-	return shipPosition;
+	return shipCoordinate;
 }
 
