@@ -26,6 +26,7 @@ namespace Engine
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 		m_spaceship = new Player();
+		m_asteroid = new Asteroid();
 	}
 
 	App::~App()
@@ -163,7 +164,10 @@ namespace Engine
 		glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		m_spaceship->Render();
-								//renders game and player
+
+		
+		m_asteroid->Render();
+								//renders game, asteroids & player
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}

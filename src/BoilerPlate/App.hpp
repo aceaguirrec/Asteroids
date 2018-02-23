@@ -14,6 +14,7 @@
 #include "Palette.h"
 #include "MathUtilities.h"
 #include "Player.hpp"
+#include "Asteroid.hpp"
 
 namespace Engine
 {
@@ -72,6 +73,7 @@ namespace Engine
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
 		Player*								m_spaceship;
+		Asteroid*							m_asteroid;
 	};
 }
 #endif /* GAME_HPP */

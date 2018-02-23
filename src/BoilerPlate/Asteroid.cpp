@@ -24,13 +24,11 @@ Asteroid::Asteroid(){
 
 void Asteroid::SetAsteroidPoints(void) {
 
-	asteroidPts.push_back(Vector2(-2.0f, 10.0f));
-	asteroidPts.push_back(Vector2(2.0f, 8.0f));
-	asteroidPts.push_back(Vector2(2.12282f, 6.62634f));
-	asteroidPts.push_back(Vector2(1.06101f, 2.71695f));
-	asteroidPts.push_back(Vector2(-3.76541f, 2.57216f));
-	asteroidPts.push_back(Vector2(-6.0f, 6.0f));
-	asteroidPts.push_back(Vector2(-3.54822f, 8.55691f));
+	asteroidPts.push_back(Vector2(20.12282f, 60.62634f));
+	asteroidPts.push_back(Vector2(10.06101f, 20.71695f));
+	asteroidPts.push_back(Vector2(-30.76541f, 20.57216f));
+	asteroidPts.push_back(Vector2(-60.0f, 60.0f));
+	asteroidPts.push_back(Vector2(-30.54822f, 80.55691f));
 
 }
 
@@ -58,7 +56,6 @@ void Asteroid::Render(void){
 	Palette colors = Palette();
 	Color bgColor = colors.getPurple();
 	glClearColor(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha());
-	glClear(GL_COLOR_BUFFER_BIT);
 
 	DrawAsteroid();
 }
