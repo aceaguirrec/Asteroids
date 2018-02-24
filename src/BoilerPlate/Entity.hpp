@@ -18,15 +18,22 @@ protected:
 	Vector2* entityPosition;
 	float entityOrientationAngle;
 	float entityMass;
+	float entityRadius;
+	Vector2* entityVelocity;
+	bool isEntityMoving;
 	vector <Vector2> entityPoints;
+	float entityMaxWidth;
+	float entityMinWidth;
+	float entityMaxHeight;
+	float entityMinHeight;
 
 public:
-	Entity();
-
+	Entity(float entityWidth, float entityHeight);
 	virtual void Render(void);
-	virtual void Update(void);
+	virtual void Update(float);
 	virtual void MoveForward(void);
 	virtual void SetEntityPoints(void);
+	void ScreenCalculations(float entityWidth, float entityHeight);
 	void DrawEntity(void);
 	float Warp(float, float, float);
 

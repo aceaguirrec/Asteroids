@@ -17,6 +17,7 @@ private:
 	Vector2* shipPosition;
 	float shipOrientationAngle;
 	float shipMass;
+	float shipFrictionFactor;
 	vector <Vector2> shipPts;
 	vector <Vector2> thrusterBoostPts;
 

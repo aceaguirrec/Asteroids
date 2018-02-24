@@ -23,13 +23,13 @@ Asteroid::Asteroid(){
 }
 
 void Asteroid::SetAsteroidPoints(void) {
-
-	asteroidPts.push_back(Vector2(20.12282f, 60.62634f));
-	asteroidPts.push_back(Vector2(10.06101f, 20.71695f));
-	asteroidPts.push_back(Vector2(-30.76541f, 20.57216f));
-	asteroidPts.push_back(Vector2(-60.0f, 60.0f));
-	asteroidPts.push_back(Vector2(-30.54822f, 80.55691f));
-
+	
+		asteroidPts.push_back(Vector2(20.12282f, 60.62634f));
+		asteroidPts.push_back(Vector2(10.06101f, 20.71695f));
+		asteroidPts.push_back(Vector2(-30.76541f, 20.57216f));
+		asteroidPts.push_back(Vector2(-60.0f, 60.0f));
+		asteroidPts.push_back(Vector2(-30.54822f, 80.55691f));
+	
 }
 
 
@@ -43,6 +43,7 @@ void Asteroid::DrawAsteroid(void) {
 	}
 	glEnd();
 }
+
 
 void Asteroid::Update(void){
 

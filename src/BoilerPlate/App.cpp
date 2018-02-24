@@ -10,7 +10,7 @@
 #include <SDL2/SDL_opengl.h>
 
 namespace Engine
-{
+{	
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 

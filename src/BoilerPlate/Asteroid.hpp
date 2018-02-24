@@ -11,7 +11,7 @@ class Asteroid :public Entity {
 
 private:
 	vector <Vector2> asteroidPts;
-	int asteroidSize;
+	enum asteroidSize {SMALL_ASTEROID, MEDIUM_ASTEROID, BIG_ASTEROID};
 public:
 	Asteroid();
 

@@ -23,6 +23,7 @@ Player::Player(){
 	shipPosition = new Vector2();
 	shipOrientationAngle = 0.0f;
 	shipMass = 5.0f;
+	shipFrictionFactor = 2.5f;
 	SetShipPoints();
 	SetThrusterPoints();
 }
@@ -53,8 +54,8 @@ void Player::SetThrusterPoints() {
 //fwd movement function, continuosly warping
 void Player::MoveForward(){
 
-	shipPosition->x -= movementSpeed * sinf(maths.degsToRads(shipOrientationAngle));
-	shipPosition->y += (movementSpeed * cosf(maths.degsToRads(shipOrientationAngle)));
+	shipPosition->x -= ((movementSpeed * 0.999) * sinf(maths.degsToRads(shipOrientationAngle)));
+	shipPosition->y += ((movementSpeed * 0.999) * cosf(maths.degsToRads(shipOrientationAngle)));
 	
 
 	shipPosition->x = Warp(shipPosition->x, windowLeftBorder, windowRightBorder);
@@ -127,23 +128,23 @@ void Player::Render() {
 //player screen warping function
 float Player::Warp(float shipCoordinate, float borderMinValue, float borderMaxValue) {
 	/*
-	if player exits screen from (bottom)/(left) of screen
-	player reappears same (x)/(y) position 
-	from (top)/(right) of screen
+	** if player exits screen from (bottom)/(left) of screen
+	** player reappears same (x)/(y) position 
+	** from (top)/(right) of screen
 	*/
 	if (shipCoordinate < borderMinValue) {
 
-		shipCoordinate = borderMaxValue + (borderMinValue - shipCoordinate);  
+		shipCoordinate = borderMaxValue - (borderMinValue - shipCoordinate);  
 		return shipCoordinate;
 	}
 	/*
-	if player exits screen from (top)/(right)
-	player reappears same (x)/(y) position
-	from (bottom)/(left) of screen
+	** if player exits screen from (top)/(right)
+	** player reappears same (x)/(y) position
+	** from (bottom)/(left) of screen
 	*/
 	if (shipCoordinate > borderMaxValue) {
 	
-		shipCoordinate = borderMinValue - (shipCoordinate - borderMaxValue);
+		shipCoordinate = borderMinValue + (shipCoordinate - borderMaxValue);
 		return shipCoordinate;
 	}
 
