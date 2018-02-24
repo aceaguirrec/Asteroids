@@ -22,7 +22,7 @@ private:
 	vector <Vector2> thrusterBoostPts;
 
 public:
-	Player();
+	Player(float entityWidth, float entityHeight);
 
 	void Update(void) override;
 	void Render(void) override;
@@ -32,7 +32,8 @@ public:
 	void RotateLeft(void);
 	void RotateRight(void);
 	void IgniteThruster(bool);
-	bool IsThrusterActive = false;
+	bool IsThrusterActive;
+	bool IsMoving;
 	void DrawThruster(void);
 	void SetShipPoints(void);
 	void DrawShip(void);

@@ -18,12 +18,15 @@ MathUtilities maths;
 
 using namespace std;
 
-Player::Player(){
+Player::Player(float entityWidth, float entityHeight){
 
 	shipPosition = new Vector2();
 	shipOrientationAngle = 0.0f;
 	shipMass = 5.0f;
 	shipFrictionFactor = 2.5f;
+	IsThrusterActive = false;
+	IsMoving = false;
+	Entity(entityWidth, entityHeight);
 	SetShipPoints();
 	SetThrusterPoints();
 }
