@@ -15,8 +15,8 @@ void Entity::Render(void) {
 
 void Entity::Update(float deltaTime) {
 
-	entityPosition->x += entityVelocity->x * deltaTime;
-	entityPosition->y += entityVelocity->y * deltaTime;
+	entityPosition->x += (entityVelocity->x * deltaTime);
+	entityPosition->y += (entityVelocity->y * deltaTime);
 
 	entityPosition->x = Warp(entityPosition->x, entityMinWidth, entityMaxWidth);
 	entityPosition->y = Warp(entityPosition->y, entityMinHeight, entityMaxHeight);

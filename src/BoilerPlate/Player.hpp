@@ -24,7 +24,7 @@ private:
 public:
 	Player(float entityWidth, float entityHeight);
 
-	void Update(void) override;
+	void Update(void);
 	void Render(void) override;
 
 	float Warp(float shipPosition, float borderMinValue, float borderMaxValue);

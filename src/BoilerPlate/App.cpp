@@ -4,6 +4,7 @@
 #include "Palette.h"
 #include "MathUtilities.h"
 #include "Player.hpp"
+#include "Entity.hpp"
 
 // OpenGL includes
 #include <GL/glew.h>
@@ -25,8 +26,8 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-		m_spaceship = new Player();
-		m_asteroid = new Asteroid();
+		m_spaceship = new Player(entityWidth, entityHeight);
+		m_asteroid = new Asteroid(entityWidth, entityHeight);
 	}
 
 	App::~App()
