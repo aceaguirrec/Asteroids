@@ -26,8 +26,8 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-		m_spaceship = new Player(entityWidth, entityHeight);
-		m_asteroid = new Asteroid(entityWidth, entityHeight);
+		m_spaceship = new Player(m_width, m_height);
+		m_asteroid = new Asteroid();
 	}
 
 	App::~App()

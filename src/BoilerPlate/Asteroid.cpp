@@ -12,41 +12,65 @@ MathUtilities asteroidMaths;
 
 using namespace std;
 
-Asteroid::Asteroid(float entityWidth, float entityHeight){
+Asteroid::Asteroid(float entityWidth, float entityHeight, int size){
 
 	asteroidPosition = new Vector2(rand(), rand());
 	Entity(entityWidth, entityHeight);
-	asteroidSize = 3;
+	asteroidSize = 1;
+	hasBeenImpacted = false;
+	GenerateAsteroidOrientationAngle();
 	SetAsteroidPoints();
+
+	if (size == 1) asteroidRadius = 15;
+	if (size == 2) asteroidRadius = 30;
+	if (size == 3) asteroidRadius = 50;
 }
 
-Asteroid::Asteroid(asteroidType type){
-
-	asteroidSize = type;
-	SetAsteroidPoints();
-}
 
 void Asteroid::SetAsteroidPoints(void) {
 		
-	int asteroidSizeFactor = GetAsteroidSize();
 	
-	asteroidPts.push_back(Vector2((20.12282f * asteroidSizeFactor), (60.62634f* asteroidSizeFactor)));
-	asteroidPts.push_back(Vector2((10.06101f * asteroidSizeFactor), (20.71695f * asteroidSizeFactor)));
-	asteroidPts.push_back(Vector2((-30.76541f * asteroidSizeFactor), (20.57216f * asteroidSizeFactor)));
-	asteroidPts.push_back(Vector2((-60.0f * asteroidSizeFactor), (60.0f * asteroidSizeFactor)));
-	asteroidPts.push_back(Vector2((-30.54822f * asteroidSizeFactor), (80.55691f * asteroidSizeFactor)));
+	asteroidPts.push_back(Vector2(20.12282f, (60.62634f)));
+	asteroidPts.push_back(Vector2(10.06101f, (20.71695f)));
+	asteroidPts.push_back(Vector2(-30.76541f, (20.57216f)));
+	asteroidPts.push_back(Vector2(-60.0f, (60.0f)));
+	asteroidPts.push_back(Vector2(-30.54822f, (80.55691f)));
 	
 }
 
 
 void Asteroid::DrawAsteroid(void) {
 
-	glBegin(GL_LINE_LOOP);
-	for (int i = 0; i < asteroidPts.size(); i++) {
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glBegin(GL_POLYGON);
 
-		glVertex2f(asteroidPts[i].x, asteroidPts[i].y);
+	switch (asteroidSize) {
+	case 1:
+		for (int i = 0; i < asteroidPts.size(); i++) {
 
+			glVertex2f(asteroidPts[i].x * 0.8f, asteroidPts[i].y * 0.8f);
+		}
+		asteroidMass = 1.0f;
+		break;
+
+	case 2:
+		for (int i = 0; i < asteroidPts.size(); i++) {
+
+			glVertex2f(asteroidPts[i].x, asteroidPts[i].y);
+		}
+		asteroidMass = 2.0f;
+		break;
+	
+	case 3:
+		for (int i = 0; i < asteroidPts.size(); i++) {
+
+			glVertex2f(asteroidPts[i].x * 2.0f, asteroidPts[i].y * 2.0f);
+		}
+		asteroidMass = 3.0f;
+		break;
+	
 	}
+	
 	glEnd();
 }
 
@@ -57,8 +81,8 @@ int Asteroid::GetAsteroidSize(void){
 
 void Asteroid::AsteroidImpulse(void){
 
-	entityVelocity->x = (asteroidMovementSpd / entityMass) * (-sinf(asteroidMaths.degsToRads(asteroidOrientationAngle))) + asteroidSize;
-	entityVelocity->y = (asteroidMovementSpd / entityMass) * cosf(asteroidMaths.degsToRads(asteroidOrientationAngle)) + asteroidSize;
+	entityVelocity.x = (asteroidMovementSpd / entityMass) * (-sinf(asteroidMaths.degsToRads(asteroidOrientationAngle))) + asteroidSize;
+	entityVelocity.y = (asteroidMovementSpd / entityMass) * cosf(asteroidMaths.degsToRads(asteroidOrientationAngle)) + asteroidSize;
 }
 
 void Asteroid::GenerateAsteroidOrientationAngle(void){
@@ -70,8 +94,8 @@ void Asteroid::GenerateAsteroidOrientationAngle(void){
 
 void Asteroid::Update(float deltaTime){
 
-	entityPosition->x += (entityVelocity->x * deltaTime);
-	entityPosition->y += (entityVelocity->y * deltaTime);
+	entityPosition->x += (entityVelocity.x * deltaTime);
+	entityPosition->y += (entityVelocity.y * deltaTime);
 
 	entityPosition->x = Warp(entityPosition->x, entityMinWidth, entityMaxWidth);
 	entityPosition->y = Warp(entityPosition->y, entityMinHeight, entityMaxHeight);

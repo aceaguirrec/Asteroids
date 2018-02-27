@@ -11,29 +11,42 @@ const int windowRightBorder = 600.0f;
 //define rotation speed value
 float rotationSpeed = 4.5f;
 
-//define movement speed constant value
+//define speed constant values
 const float movementSpeed = 8.0f;
+const float maxMovementSpeed = 350.0f;
 
-MathUtilities maths;
+MathUtilities shipMaths;
 
 using namespace std;
 
-Player::Player(float entityWidth, float entityHeight){
+Player::Player(float pWidth, float pHeight){
 
+	
 	shipPosition = new Vector2();
 	shipOrientationAngle = 0.0f;
 	shipMass = 5.0f;
-	shipFrictionFactor = 2.5f;
+	shipFrictionFactor = 0.999f;
 	IsThrusterActive = false;
-	IsMoving = false;
-	Entity(entityWidth, entityHeight);
 	SetShipPoints();
 	SetThrusterPoints();
 }
 
-void Player::Update(){
+void Player::Update(float deltaTime){
 
+	if (!IsThrusterActive) {
+		entityVelocity.x = ((entityVelocity.x / entitySpd) * shipFrictionFactor);
+		entityVelocity.y = ((entityVelocity.y / entitySpd) * shipFrictionFactor);
+	}
+	entitySpd = entityVelocity.vLength();
 
+	if (entitySpd > maxMovementSpeed) {
+
+		entityVelocity.x = (entityVelocity.x / entitySpd) * maxMovementSpeed;
+		entityVelocity.y = (entityVelocity.y / entitySpd) * maxMovementSpeed;
+	
+	}
+
+	Entity::Update(deltaTime);
 }
 
 void Player::SetShipPoints() {
@@ -54,15 +67,25 @@ void Player::SetThrusterPoints() {
 
 
 }
+
+float Player::GetOrientationAngle(){
+
+	return shipOrientationAngle;
+}
+
+float Player::GetMass(){
+
+	return shipMass;
+}
+void Player::applyAcceleration(Vector2 impulse){
+
+	entityVelocity.x += (impulse.x / shipMass) * cosf(shipMaths.degsToRads(shipOrientationAngle + 45));
+	entityVelocity.y += (impulse.y / shipMass) * sinf(shipMaths.degsToRads(shipOrientationAngle + 45));
+}
 //fwd movement function, continuosly warping
 void Player::MoveForward(){
 
-	shipPosition->x -= ((movementSpeed * 0.999) * sinf(maths.degsToRads(shipOrientationAngle)));
-	shipPosition->y += ((movementSpeed * 0.999) * cosf(maths.degsToRads(shipOrientationAngle)));
-	
-
-	shipPosition->x = Warp(shipPosition->x, windowLeftBorder, windowRightBorder);
-	shipPosition->y = Warp(shipPosition->y, windowBottom, windowCeiling);
+	applyAcceleration(Vector2(movementSpeed, movementSpeed));
 }
 
 void Player::RotateLeft() {

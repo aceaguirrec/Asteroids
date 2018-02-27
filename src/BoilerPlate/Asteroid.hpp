@@ -12,21 +12,17 @@ class Asteroid :public Entity {
 private:
 	Vector2* asteroidPosition;
 	vector <Vector2> asteroidPts;
-	enum struct asteroidType {
-		SMALL_ASTEROID = 1,
-		MEDIUM_ASTEROID = 2,
-		BIG_ASTEROID = 3
-	};
 	int asteroidSize;
 	float asteroidMass;
+	float asteroidRadius;
 	float asteroidOrientationAngle;
 	const float asteroidMovementSpd = 50.0f;
 	const float asteroidRotationSpd = 35.0f;
+	bool hasBeenImpacted;
 
 
 public:
-	Asteroid(float entityWidth, float entityHeight);
-	Asteroid(asteroidType);
+	Asteroid(float entityWidth, float entityHeight, int size);
 
 	void Update(float deltaTime);
 	void Render(void) override;

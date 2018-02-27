@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
@@ -19,7 +18,10 @@ protected:
 	float entityOrientationAngle;
 	float entityMass;
 	float entityRadius;
-	Vector2* entityVelocity;
+	float entityWidth;
+	float entityHeight;
+	Vector2 entityVelocity;
+	float entitySpd;
 	bool isEntityMoving;
 	vector <Vector2> entityPoints;
 	float entityMaxWidth;
@@ -28,12 +30,13 @@ protected:
 	float entityMinHeight;
 
 public:
-	Entity(float entityWidth, float entityHeight);
+	Entity();
+	Entity(float eWidth, float eHeight);
+	float GetEntityRadius();
 	virtual void Render(void);
 	virtual void Update(float);
 	virtual void MoveForward(void);
 	virtual void SetEntityPoints(void);
-	void ScreenCalculations(float entityWidth, float entityHeight);
 	void DrawEntity(void);
 	float Warp(float, float, float);
 

@@ -2,11 +2,21 @@
 
 //define window border constant values
 
-Entity::Entity(float entityWidth, float entityHeight) {
+Entity::Entity() {
 
-	entityPosition = new Vector2();
+}
+
+Entity::Entity(float eWidth, float eHeight){
+
+	entityWidth = eWidth;
+	entityHeight = eHeight;
 	entityOrientationAngle = 0.0f;
-	ScreenCalculations(entityWidth, entityHeight);
+}
+
+
+float Entity::GetEntityRadius(){
+
+	return entityRadius;
 }
 
 void Entity::Render(void) {
@@ -15,8 +25,8 @@ void Entity::Render(void) {
 
 void Entity::Update(float deltaTime) {
 
-	entityPosition->x += (entityVelocity->x * deltaTime);
-	entityPosition->y += (entityVelocity->y * deltaTime);
+	entityPosition->x += (entityVelocity.x * deltaTime);
+	entityPosition->y += (entityVelocity.y * deltaTime);
 
 	entityPosition->x = Warp(entityPosition->x, entityMinWidth, entityMaxWidth);
 	entityPosition->y = Warp(entityPosition->y, entityMinHeight, entityMaxHeight);
@@ -31,17 +41,6 @@ void Entity::SetEntityPoints(void){
 
 }
 
-void Entity::ScreenCalculations(float entityWidth, float entityHeight){
-
-	float halfEntityWidth = (entityWidth / 2.0f);
-	float halfEntityHeight = (entityHeight / 2.0f);
-
-	entityMaxWidth = halfEntityWidth;
-	entityMinWidth = (halfEntityWidth * (-1.0f));
-	entityMaxHeight = halfEntityHeight;
-	entityMinHeight = (halfEntityHeight * (-1.0f));
-
-}
 
 void Entity::DrawEntity(void){
 
