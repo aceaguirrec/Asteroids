@@ -41,6 +41,7 @@ public:
 	void DrawEntity(void);
 	float Warp(float, float, float);
 	void DrawDebuggingCircle(void);
+	bool GetCollidingStatus(bool collidingStatus);
 	void SetCollidingStatus(bool collidingStatus);
 	void SetDebuggingStatus(bool debuggingStatus);
 

@@ -4,6 +4,7 @@
 #define ASTEROID_H
 
 #include "Entity.hpp"
+#include "Player.hpp"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ public:
 	Vector2 GetAsteroidPosition(void);
 	int GetAsteroidSize(void);
 	void AsteroidImpulse(void);
+	void Collision(Player p1);
 	void GenerateAsteroidOrientationAngle(void);
 
 };

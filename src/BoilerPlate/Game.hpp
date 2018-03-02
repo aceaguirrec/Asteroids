@@ -9,6 +9,7 @@
 #include "Bullet.hpp"
 #include "InputManager.hpp"
 #include "TextManager.hpp"
+#include "Entity.hpp"
 #include <ctime>
 #include <irrKlang.h>
 #include <ik_irrKlangTypes.h>
@@ -18,22 +19,22 @@
 class Game {
 private:
 	// **********  MEMBERS *********
-	Player*							p1;
+	Player*							spaceship;
 	std::vector<Bullet*>			bullets;
 	std::vector<Bullet*>			activeBullets;
 	std::vector<Asteroid*>			asteroids;
 	int								width;
 	int								height;
-	float							playerActiveTime;
+	float							playerAliveTime;
 	float							playerDeadTime;
 	int								score;
 	int                             lives;
 	int								wave;
-	int								getting2000MorePointsCounter;
-	TextManager                 userFeedBackMessages;
-	bool isDebugMode;
-	bool isPlayerAlive;
-	irrklang::ISoundEngine *SoundEngine;
+	int								oneUpCounter;
+	TextManager                     feedBackMessages;
+	bool                            isDebugMode;
+	bool                            isPlayerAlive;
+	irrklang::ISoundEngine          *SoundEngine;
 
 public:
 	//********* FUNCTIONS ************
@@ -41,34 +42,34 @@ public:
 	Game();
 	Game(int width_, int height_);
 	bool CheckCollisionsWithBullets(Asteroid*);
-	void CheckAllCollisions();
-	Player* getPlayer();
-	int getScore();
-	int	pointsTil1Up;
-	bool addALife;
+	void CheckAllCollisions(void);
+	Player* GetPlayer(void);
+	int GetScore(void);
+	int	pointsTilOneUp;
+	bool OneUp;
 
 
-	int	getPlayerStatus();
-	void RestartGame();
-	void drawPlayerLives();
-	void showPlayerLives();
-	void SpawnAsteroids();
-	void FireLaser();
-	void AddAsteroid();
-	void RemoveAsteroid();
-	void DebuggingMode();
-	void DrawDebuggingCircles();
+	int	GetPlayerStatus(void);
+	void RestartGame(void);
+	void DrawPlayerLives(void);
+	void ShowPlayerLives(void);
+	void SpawnAsteroids(void);
+	void FireLaser(void);
+	void AddAsteroid(void);
+	void RemoveAsteroid(void);
+	void DebuggingMode(void);
+	void DrawDebuggingCircles(void);
 	void ResizeWidthAndHeight(int entityWidth, int entityHeight);
-	void drawScore();
-	void drawGameOverMessage();
+	void DrawScore(void);
+	void DrawGameOverMessage(void);
 
 	void UpdateGame(float deltaTime);
-	void RenderGame();
+	void RenderGame(void);
 
-	InputManager iM;
-	InputManager GetInputManager();
-	void InputController();
-	void ResetInputCounter();
+	InputManager inputManager;
+	InputManager GetInputManager(void);
+	void InputController(void);
+	void ResetInputCounter(void);
 
 };
 #endif // !GAME_H_INCLUDED

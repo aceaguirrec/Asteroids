@@ -3,7 +3,7 @@
 #ifndef TEXT_MANAGER_H
 #define TEXTMANAGER_H
 
-#include "IncludeSDL.hpp"
+#include 
 #include <string>
 #include <iostream>
 

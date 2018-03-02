@@ -26,8 +26,7 @@ namespace Engine
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-		m_spaceship = new Player(m_width, m_height);
-		m_asteroids.push_back (new Asteroid(m_width, m_height, 3));
+		m_game = new Game();
 	}
 
 	App::~App()
@@ -90,23 +89,39 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:				//moves player ship forward
-			SDL_Log("Moving forward.");
-			m_spaceship->MoveForward();
-			m_spaceship->IgniteThruster(true);
+			m_game->GetPlayer()->MoveForward();
 			break;
 
 		case SDL_SCANCODE_A:			//rotates player ship left from ship's POV
-			SDL_Log("Steering left.");
-			m_spaceship->RotateLeft();
-			break;
-
-		case SDL_SCANCODE_S:			//moves player ship backwards (for now)
-			SDL_Log("Applying brakes");
+			m_game->GetPlayer()->RotateLeft();
 			break;
 
 		case SDL_SCANCODE_D:			//rotates player ship right from ship's POV
-			SDL_Log("Steering left.");
-			m_spaceship->RotateRight();
+			m_game->GetPlayer()->RotateRight();
+			break;
+
+		case SDL_SCANCODE_SPACE:			//shoots
+			m_game->GetPlayer()->FireLasers();
+			break;
+			
+		case SDL_SCANCODE_F:			//shoots
+			
+			break;
+
+		case SDL_SCANCODE_L:			//shoots
+			m_game->RemoveAsteroid();
+			break;
+
+		case SDL_SCANCODE_M:			//shoots
+			m_game->AddAsteroid();
+			break;
+
+		case SDL_SCANCODE_G:			//shoots
+			m_game->DebuggingMode();
+			break;
+
+		case SDL_SCANCODE_R:			//shoots
+			m_game->inputManager.SetR(true);
 			break;
 
 
@@ -126,8 +141,8 @@ namespace Engine
 			break;
 
 
-		case SDL_SCANCODE_W:
-			m_spaceship->IgniteThruster(false);
+		case SDL_SCANCODE_W:				
+			m_game->GetPlayer->StopThruster();
 			break;
 
 
@@ -141,11 +156,12 @@ namespace Engine
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
-		// Update code goes here
-		//
+		m_game->UpdateGame(deltaTime);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
+
+		
 
 		while (endTime < nextTimeFrame)
 		{
@@ -164,10 +180,8 @@ namespace Engine
 	{
 		glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		m_spaceship->Render();
+		m_game->RenderGame();
 
-		
-		m_asteroid->Render();
 								//renders game, asteroids & player
 
 		SDL_GL_SwapWindow(m_mainWindow);

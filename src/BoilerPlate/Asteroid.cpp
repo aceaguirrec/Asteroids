@@ -83,6 +83,17 @@ void Asteroid::AsteroidImpulse(void){
 	entityVelocity.y = (asteroidMovementSpd / entityMass) * cosf(asteroidMaths.degsToRads(entityOrientationAngle)) + asteroidSize;
 }
 
+void Asteroid::Collision(Player p1){
+
+	float distanceToPlayer = GetDistanceBtwn2Entities((p1.GetEntityPosition));
+
+	if (distanceToPlayer <= (entityRadius + p1.GetEntityRadius)) {
+
+		isColliding = true;
+		p1.SetCollidingStatus(true);
+	}
+}
+
 void Asteroid::GenerateAsteroidOrientationAngle(void){
 
 	entityOrientationAngle = (rand() % 360);

@@ -18,7 +18,6 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -36,7 +35,6 @@
     <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="TextManager.hpp" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="InputManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

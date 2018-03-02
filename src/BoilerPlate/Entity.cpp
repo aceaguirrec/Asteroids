@@ -102,6 +102,12 @@ void Entity::DrawDebuggingCircle(void){
 	glEnd();
 }
 
+bool Entity::GetCollidingStatus(bool collidingStatus){
+
+	isColliding = collidingStatus;
+	return collidingStatus;
+}
+
 void Entity::SetCollidingStatus(bool collidingStatus){
 
 	isColliding = collidingStatus;

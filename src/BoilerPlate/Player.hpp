@@ -15,6 +15,7 @@ private:
 	float shipFrictionFactor;
 	bool HasCrashed;
 	bool IsThrusterActive;
+	bool IsPlayerAlive;
 	vector <Vector2> shipPts;
 	vector <Vector2> thrusterBoostPts;
 
@@ -31,12 +32,14 @@ public:
 
 	void IgniteThruster(bool);
 	void DrawThruster(void);
+	void StopThruster(void);
 
 	void SetShipPoints(void);
 	void DrawShip(void);
 	void SetThrusterPoints(void);
 
 	Vector2 GetShipPosition(void);
+	void SetNewPosition(Vector2 position);
 	float GetOrientationAngle(void);
 	float GetMass(void);
 
@@ -47,5 +50,7 @@ public:
 	Bullet* FireLasers(void);
 
 	void Collision(Asteroid asteroid);
+
+	bool GetCanPlayerShoot(void);
 };
 #endif // !_PLAYER_H_

@@ -72,6 +72,11 @@ Vector2 Player::GetShipPosition(void){
 	return entityPosition;
 }
 
+void Player::SetNewPosition(Vector2 newPosition){
+
+	entityPosition = newPosition;
+}
+
 float Player::GetOrientationAngle(){
 
 	return entityOrientationAngle;
@@ -126,6 +131,10 @@ void Player::Collision(Asteroid asteroid){
 		asteroid.SetCollidingStatus(true);
 	}
 }
+bool Player::GetCanPlayerShoot(void){
+
+	if (IsPlayerAlive) return true;
+}
 //fwd movement function, continuosly warping
 void Player::MoveForward(){
 
@@ -172,6 +181,11 @@ void Player::DrawThruster() {
 	
 	}
 
+}
+
+void Player::StopThruster(void){
+
+	IsThrusterActive = false;
 }
 
 //player render function

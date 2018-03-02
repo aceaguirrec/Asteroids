@@ -12,23 +12,23 @@ Game::Game() {
 
 Game::Game(int width_, int height_) {
 	srand(time(NULL));
-	p1 = new Player(width_, height_);
+	spaceship = new Player(width_, height_);
 	wave = 1;
 	for (int i = 0; i < 4 + wave; i++) {
 		asteroids.push_back(new Asteroid(width_, height_, 'l'));
 	}
-	userFeedBackMessages.Init();
-	userFeedBackMessages = TextManager(width, height);
+	feedBackMessages.Init();
+	feedBackMessages = TextManager(width, height);
 	isDebugMode = false;
 	height = height_;
 	width = width_;
-	playerActiveTime = 0;
+	playerAliveTime = 0;
 	playerDeadTime = 0;
 	score = 0;
 	lives = 3;
-	addALife = false;
-	pointsTil1Up = 3000;
-	getting2000MorePointsCounter = 0;
+	OneUp = false;
+	pointsTilOneUp = 3000;
+	oneUpCounter = 0;
 
 	SoundEngine = irrklang::createIrrKlangDevice();
 	SoundEngine->setSoundVolume(1.0f);
@@ -40,7 +40,7 @@ bool Game::CheckCollisionsWithBullets(Asteroid* asteroid) {
 	std::vector <Bullet*> remainingAsteroids;
 
 	for (int i = 0; i < bullets.size(); i++) 
-		if (asteroid->isColliding(bullets[i])) {
+		if (asteroid->GetCollidingStatus(bullets[i])) {
 
 			hasCollided = true;
 			if (asteroid->GetAsteroidSize() == smallAsteroid) score += 100;
@@ -49,6 +49,7 @@ bool Game::CheckCollisionsWithBullets(Asteroid* asteroid) {
 		}
 		else remainingAsteroids.push_back(bullets[i]);
 	}
+	
 	bullets = remainingAsteroids;
 
 	return hasCollided;
@@ -56,39 +57,39 @@ bool Game::CheckCollisionsWithBullets(Asteroid* asteroid) {
 
 
 void Game::CheckAllCollisions() {
-	if (!debugMode) {
+	if (!isDebugMode) {
 		std::vector <Asteroid*> remainingAsteroids;
 		for (int i = 0; i < asteroids.size(); i++) {
 			if (CheckCollisionsWithBullets(asteroids[i])) {
-				if (asteroids[i]->getSize() == bigAsteroid) {
-					Asteroid * division1 = asteroids[i];
-					score += 25;
-					division1->setSize(mediumAsteroid);
+				if (asteroids[i]->GetAsteroidSize() == bigAsteroid) {
+					Asteroid * firstDivision = asteroids[i];
+					score += 100;
+					firstDivision->setSize(mediumAsteroid);
 
-					Asteroid *division2 = new Asteroid(width, height, mediumAsteroid);
-					Vector2 pos = division1->getPosition();
-					division2->setPosition(pos);
+					Asteroid* secondDivision = new Asteroid(width, height, mediumAsteroid);
+					Vector2 pos = firstDivision->getPosition();
+					secondDivision->SetNewPosition(pos);
 
-					remainingAsteroids.push_back(division1);
-					remainingAsteroids.push_back(division2);
+					remainingAsteroids.push_back(firstDivision);
+					remainingAsteroids.push_back(secondDivision);
 				}
-				else if (asteroids[i]->getSize() == mediumAsteroid) {
-					Asteroid *division1 = asteroids[i];
-					division1->setSize(smallAsteroid);
+				else if (asteroids[i]->GetAsteroidSize() == mediumAsteroid) {
+					Asteroid* firstDivision = asteroids[i];
+					firstDivision->setSize(smallAsteroid);
 					score += 50;
-					Asteroid *division2 = new Asteroid(width, height, smallAsteroid);
-					Vector2 pos = division1->getPosition();
-					division2->setPosition(pos);
+					Asteroid* secondDivision = new Asteroid(width, height, smallAsteroid);
+					Vector2 pos = firstDivision->GetEntityPosition();
+					secondDivision->SetNewPosition(pos);
 
-					remainingAsteroids.push_back(division1);
-					remainingAsteroids.push_back(division2);
+					remainingAsteroids.push_back(firstDivision);
+					remainingAsteroids.push_back(secondDivision);
 				}
 			}
 			else remainingAsteroids.push_back(asteroids[i]);
 
-			if (asteroids[i]->checkCollision(p1) && playerActiveTime>timeUntillPlayerCanDieOrRespawn) {
+			if (asteroids[i]->Collision(spaceship) && playerAliveTime>timeTilPlayerCanDieOrRespawn) {
 				isPlayerAlive = false;
-				playerActiveTime = 0;
+				playerAliveTime = 0;
 				lives -= 1;
 			}
 		}
@@ -98,11 +99,11 @@ void Game::CheckAllCollisions() {
 }
 
 
-Player* Game::getPlayer() {
-	return p1;
+Player* Game::GetPlayer() {
+	return spaceship;
 }
 
-int Game::getPlayerStatus() {
+int Game::GetPlayerStatus() {
 	return lives;
 }
 
@@ -114,17 +115,18 @@ void Game::RestartGame() {
 	lives = 3;
 	score = 0;
 	wave = 1;
-	pointsUntillAddingLife = 3000;
+	pointsTilOneUp = 1000;
 
 }
 
-int Game::getScore() {
+int Game::GetScore() {
 	return score;
 }
 
 
 
-void Game::drawPlayerLives() {
+void Game::DrawPlayerLives() {
+
 	glColor3f(1.0, 0.0, 1.0);
 	glBegin(GL_POLYGON);
 	glVertex2f(0.0 * 10, -1.7 * 10);
@@ -145,7 +147,7 @@ void Game::drawPlayerLives() {
 	glEnd();
 }
 
-void Game::showPlayerLives() {
+void Game::ShowPlayerLives() {
 	int distance = 0;
 	for (int i = 0; i < lives; i++) {
 		glLoadIdentity();
@@ -157,10 +159,10 @@ void Game::showPlayerLives() {
 }
 
 
-void Game::ShotABullet() {
+void Game::FireLaser() {
 	if (isPlayerAlive) {
 		if (bullets.size() < 10) {
-			bullets.push_back(p1->shoot());
+			bullets.push_back(spaceship->FireLasers());
 			SoundEngine->play2D("Fire.wav");
 		}
 	}
@@ -171,27 +173,31 @@ void Game::AddAsteroid() {
 }
 
 void Game::SpawnAsteroids() {
+
 	for (int i = 0; i < 4 + wave; i++) {
 		asteroids.push_back(new Asteroid(width, height, bigAsteroid));
 	}
 }
 
-void Game::EliminateAsteroid() {
+void Game::RemoveAsteroid() {
+
 	if (asteroids.size()>0) {
+
 		asteroids.pop_back();
 	}
 }
 
 
-void Game::SwitchDebugMode() {
-	if (debugMode == false) debugMode = true;
-	else if (debugMode == true) debugMode = false;
+void Game::DebuggingMode() {
+
+	if (isDebugMode == false) isDebugMode = true;
+	else if (isDebugMode == true) isDebugMode = false;
 }
 
 
 void Game::UpdateGame(float deltaTime) {
 	if (isPlayerAlive) {
-		p1->Update(deltaTime);
+		spaceship->Update(deltaTime);
 	}
 	if (asteroids.size() == 0) {
 		wave += 1;
@@ -205,34 +211,35 @@ void Game::UpdateGame(float deltaTime) {
 	std::vector <Bullet*> activeBullets;
 	for (auto bullet : bullets) {
 		bullet->Update(deltaTime);
-		if (!bullet->IsActive()) activeBullets.push_back(bullet);
+		if (!bullet->IsInFlight()) activeBullets.push_back(bullet);
 	}
 	bullets = activeBullets;
 
-	if (playerDeadTime > timeUntillPlayerCanDieOrRespawn && lives >0) {
-		p1->setPosition(Vector2::Origin);
+	if (playerDeadTime > timeTilPlayerCanDieOrRespawn && lives >0) {
+
+		spaceship->SetNewPosition(Vector2::Origin);
 		isPlayerAlive = true;
 		playerDeadTime = 0;
 	}
 	if (isPlayerAlive) {
-		playerActiveTime++;
+		playerAliveTime++;
 	}
 	else {
 		playerDeadTime++;
 	}
 
 
-	if (score > pointsUntillAddingLife + (getting2000MorePointsCounter * 2000)) {
-		getting2000MorePointsCounter++;
-		addALife = true;
-		if (addALife = true) lives++;
-		addALife = false;
+	if (score > pointsTilOneUp + (oneUpCounter * 1000)) {
+		oneUpCounter++;
+		OneUp = true;
+		if (OneUp = true) lives++;
+		OneUp = false;
 	}
 
 
 }
 
-void Game::drawScore() {
+void Game::DrawScore() {
 	SDL_Color black;
 	black.r = 0;
 	black.g = 0;
@@ -246,7 +253,7 @@ void Game::drawScore() {
 }
 
 
-void Game::drawEndGameMessage() {
+void Game::DrawGameOverMessage() {
 	SDL_Color black;
 	black.r = 0;
 	black.g = 0;
@@ -265,7 +272,7 @@ void Game::drawEndGameMessage() {
 
 void Game::RenderGame() {
 	if (isPlayerAlive) {
-		p1->Render();
+		spaceship->Render();
 	}
 	showPlayerLives();
 	for (int i = 0; i < asteroids.size(); i++) {
@@ -277,20 +284,20 @@ void Game::RenderGame() {
 
 InputManager Game::GetInputManager(){
 
-	return iM;
+	return inputManager;
 }
 
 void Game::InputController(){
 
 	if (inputManager.GetW()) {
 
-		player->Impulse();
-		player->SetIsThrusterOn(true);
+		player->moveForward();
+		player->IgniteThruster(true);
 		soundManager->play2D("sound/thrust.wav");
 	}
 	else {
 
-		player->SetIsThrusterOn(false);
+		player->IgniteThruster(false);
 	}
 
 	if (inputManager.GetA()) {
@@ -303,14 +310,14 @@ void Game::InputController(){
 		player->RotateRight();
 	}
 
-	if (inputManager.GetR() && inputCounter == 0) {
+	if (inputManager.GetL() && inputCounter == 0) {
 
 		RemoveAsteroid();
 
 		ResetInputCounter();
 	}
 
-	if (inputManager.GetT() && inputCounter == 0) {
+	if (inputManager.GetM() && inputCounter == 0) {
 
 		AddAsteroid();
 
@@ -319,7 +326,7 @@ void Game::InputController(){
 
 	if (inputManager.GetG() && inputCounter == 0) {
 
-		SwitchingDebuggerMode();
+		DebuggingMode();
 
 		ResetInputCounter();
 	}
@@ -341,9 +348,9 @@ void Game::InputController(){
 
 	if (inputManager.GetSpace() && inputCounter == 0) {
 
-		if (player->GetCanPlayerShoot() == true) {
+		if (Player->GetCanPlayerShoot() == true) {
 
-			shootBullet();
+			FireLaser();
 
 			ResetInputCounter();
 		}
@@ -353,18 +360,18 @@ void Game::InputController(){
 
 void Game::ResetInputCounter(){
 
-	inputCounter = 9;
+	inputCounter = 10;
 }
 
-void Game::DrawCircles() {
-	if (debugMode == true) {
-		p1->drawCircle();
+void Game::DrawDebuggingCircles() {
+	if (isDebugMode == true) {
+		spaceship->DrawDebuggingCircles();
 		for (auto bullet : bullets) {
-			bullet->drawCircle();
+			bullet->DrawDebuggingCircles();
 		}
 		for (int i = 0; i < asteroids.size(); i++) {
-			asteroids[i]->drawCircle();
-			p1->drawLines(asteroids[i]);
+			asteroids[i]->DrawDebuggingCircles();
+			spaceship->DistanceLines(asteroids[i]);
 		}
 	}
 
@@ -374,7 +381,7 @@ void Game::DrawCircles() {
 void Game::ResizeWidthAndHeight(int width_, int height_) {
 	height = height_;
 	width = width_;
-	p1->resizeWidthAndHeight(width_, height_);
+	spaceship->resizeWidthAndHeight(width_, height_);
 	for (int i = 0; i < asteroids.size(); i++) {
 		asteroids[i]->resizeWidthAndHeight(width_, height_);
 	}

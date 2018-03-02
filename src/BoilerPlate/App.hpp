@@ -15,6 +15,7 @@
 #include "MathUtilities.h"
 #include "Player.hpp"
 #include "Asteroid.hpp"
+#include "Game.hpp"
 
 namespace Engine
 {
@@ -74,9 +75,8 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
-		Player*								m_spaceship;
-		std::vector <Asteroid*>				m_asteroids;
-		std::vector <Bullet*>				m_bullets;
+		Game*								m_game;
+
 	};
 }
 #endif /* GAME_HPP */
