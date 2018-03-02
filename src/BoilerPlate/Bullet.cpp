@@ -1,4 +1,6 @@
 #include "Bullet.hpp"
+#include "MathUtilities.h"
+
 
 Bullet::Bullet(float bWidth, float bHeight){
 
@@ -46,9 +48,23 @@ void Bullet::Update(float deltaTime){
 void Bullet::Render(void){
 
 	glLoadIdentity();
-	glTranslatef(entityPosition->x, entityPosition->y, 0.0f);
+	glTranslatef(entityPosition.x, entityPosition.y, 0.0f);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	DrawBullet();
 
+}
+
+void Bullet::ShotStatus(Vector2 impulse, Vector2 bulletPosition, int bulletAngle){
+	
+	MathUtilities bulletMaths;
+
+	entityOrientationAngle = bulletAngle;
+	entityPosition = bulletPosition;
+
+	float velocityInX = impulse.x * cosf(bulletMaths.degsToRads(entityOrientationAngle));
+	float velocityInY = impulse.y * sinf(bulletMaths.degsToRads(entityOrientationAngle));
+
+	entityVelocity.x = (velocityInX / entityMass);
+	entityVelocity.y = (velocityInY / entityMass);
 }

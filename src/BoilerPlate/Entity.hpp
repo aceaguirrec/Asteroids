@@ -4,6 +4,7 @@
 
 #include "Vector2.hpp"
 #include "MathUtilities.h"
+#include <cmath>
 #include <vector>
 
 #include <GL/glew.h>
@@ -14,7 +15,7 @@ using namespace std;
 class Entity {
 
 protected:
-	Vector2* entityPosition;
+	Vector2 entityPosition;
 	float entityOrientationAngle;
 	float entityMass;
 	float entityRadius;
@@ -22,23 +23,26 @@ protected:
 	float entityHeight;
 	Vector2 entityVelocity;
 	float entitySpd;
-	bool isEntityMoving;
 	vector <Vector2> entityPoints;
-	float entityMaxWidth;
-	float entityMinWidth;
-	float entityMaxHeight;
-	float entityMinHeight;
+	bool isColliding;
+	bool isDebugging;
+	
 
 public:
 	Entity();
 	Entity(float eWidth, float eHeight);
-	float GetEntityRadius();
+	Vector2 GetEntityPosition(void);
+	float GetEntityRadius(void);
+	float GetDistanceBtwn2Entities(Vector2 position);
 	virtual void Render(void);
 	virtual void Update(float);
 	virtual void MoveForward(void);
 	virtual void SetEntityPoints(void);
 	void DrawEntity(void);
 	float Warp(float, float, float);
+	void DrawDebuggingCircle(void);
+	void SetCollidingStatus(bool collidingStatus);
+	void SetDebuggingStatus(bool debuggingStatus);
 
 };
 #endif // !_ENTITY_H_

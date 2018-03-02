@@ -6,6 +6,8 @@
 #include "Entity.hpp"
 #include <SDL2/SDL_opengl.h>
 
+using namespace std;
+
 const int maxBulletLifeSpan = 0;
 
 class Bullet : public Entity {
@@ -22,6 +24,7 @@ public:
 	void DrawBullet(void);
 	void Update(float deltaTime);
 	void Render(void);
+	void ShotStatus(Vector2 impulse, Vector2 bulletPosition, int bulletAngle);
 
 
 

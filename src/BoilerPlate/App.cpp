@@ -27,7 +27,7 @@ namespace Engine
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 		m_spaceship = new Player(m_width, m_height);
-		m_asteroid = new Asteroid();
+		m_asteroids.push_back (new Asteroid(m_width, m_height, 3));
 	}
 
 	App::~App()

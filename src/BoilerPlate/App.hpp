@@ -58,6 +58,8 @@ namespace Engine
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;
 		void OnKeyUp						( SDL_KeyboardEvent keyBoardEvent ) override;
+		void FrameRateGraph                 ( );
+		void CheckFrameRate                 ( );
 
 
 		/* =============================================================
@@ -73,7 +75,8 @@ namespace Engine
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
 		Player*								m_spaceship;
-		Asteroid*							m_asteroid;
+		std::vector <Asteroid*>				m_asteroids;
+		std::vector <Bullet*>				m_bullets;
 	};
 }
 #endif /* GAME_HPP */

@@ -4,20 +4,16 @@
 #define _PLAYER_H_
 
 #include "Entity.hpp"
+#include "Asteroid.hpp"
+#include "Bullet.hpp"
 
 using namespace std;
 
-/*=================
-* Player 
-*declaration
-=================*/
 class Player: public Entity {
 					
 private:
-	Vector2* shipPosition;
-	float shipOrientationAngle;
-	float shipMass;
 	float shipFrictionFactor;
+	bool HasCrashed;
 	bool IsThrusterActive;
 	vector <Vector2> shipPts;
 	vector <Vector2> thrusterBoostPts;
@@ -40,9 +36,16 @@ public:
 	void DrawShip(void);
 	void SetThrusterPoints(void);
 
-	float GetOrientationAngle();
-	float GetMass();
+	Vector2 GetShipPosition(void);
+	float GetOrientationAngle(void);
+	float GetMass(void);
 
-	void applyAcceleration(Vector2 impulse);
+	void ApplyAcceleration(Vector2 impulse);
+
+	void DistanceLines(Asteroid* asteroid);
+
+	Bullet* FireLasers(void);
+
+	void Collision(Asteroid asteroid);
 };
 #endif // !_PLAYER_H_

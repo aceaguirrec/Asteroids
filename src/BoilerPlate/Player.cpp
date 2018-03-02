@@ -2,12 +2,6 @@
 #include "Palette.h"
 
 
-//define window border constant values
-const int windowBottom = -380.0f;
-const int windowCeiling = 380.0f;
-const int windowLeftBorder = -600.0f;
-const int windowRightBorder = 600.0f;
-
 //define rotation speed value
 float rotationSpeed = 4.5f;
 
@@ -22,27 +16,32 @@ using namespace std;
 Player::Player(float pWidth, float pHeight){
 
 	
-	shipPosition = new Vector2();
-	shipOrientationAngle = 0.0f;
-	shipMass = 5.0f;
+	entityPosition = Vector2();
+	entityOrientationAngle = 0.0f;
+	entityMass = 5.0f;
 	shipFrictionFactor = 0.999f;
+	entityRadius = 24.0f;
 	IsThrusterActive = false;
+	HasCrashed = false;
 	SetShipPoints();
 	SetThrusterPoints();
 }
 
 void Player::Update(float deltaTime){
 
+	entitySpd = entityVelocity.vLength();
+
+
 	if (!IsThrusterActive) {
 		entityVelocity.x = ((entityVelocity.x / entitySpd) * shipFrictionFactor);
 		entityVelocity.y = ((entityVelocity.y / entitySpd) * shipFrictionFactor);
 	}
-	entitySpd = entityVelocity.vLength();
+	
 
 	if (entitySpd > maxMovementSpeed) {
 
-		entityVelocity.x = (entityVelocity.x / entitySpd) * maxMovementSpeed;
-		entityVelocity.y = (entityVelocity.y / entitySpd) * maxMovementSpeed;
+		entityVelocity.x = ((entityVelocity.x / entitySpd) * maxMovementSpeed);
+		entityVelocity.y = ((entityVelocity.y / entitySpd) * maxMovementSpeed);
 	
 	}
 
@@ -68,35 +67,80 @@ void Player::SetThrusterPoints() {
 
 }
 
+Vector2 Player::GetShipPosition(void){
+
+	return entityPosition;
+}
+
 float Player::GetOrientationAngle(){
 
-	return shipOrientationAngle;
+	return entityOrientationAngle;
 }
 
 float Player::GetMass(){
 
-	return shipMass;
+	return entityMass;
 }
-void Player::applyAcceleration(Vector2 impulse){
 
-	entityVelocity.x += (impulse.x / shipMass) * cosf(shipMaths.degsToRads(shipOrientationAngle + 45));
-	entityVelocity.y += (impulse.y / shipMass) * sinf(shipMaths.degsToRads(shipOrientationAngle + 45));
+void Player::ApplyAcceleration(Vector2 impulse){
+
+	entityVelocity.x += (impulse.x / entityMass) * cosf(shipMaths.degsToRads(entityOrientationAngle + 45));
+	entityVelocity.y += (impulse.y / entityMass) * sinf(shipMaths.degsToRads(entityOrientationAngle + 45));
+}
+
+void Player::DistanceLines(Asteroid * asteroid){
+
+	glLoadIdentity();
+	glTranslatef(0.0f, 0.0f, 0.0f);
+	glRotatef(0.0, 0.0, 0.0, 1.0);
+
+	float distanceToAsteroid = sqrt(((entityPosition.x - asteroid->GetAsteroidPosition().x)*(entityPosition.x - asteroid->GetAsteroidPosition().x)) 
+		+ ((entityPosition.y - asteroid->GetAsteroidPosition().y)*(entityPosition.y - asteroid->GetAsteroidPosition().y)));
+
+	if (distanceToAsteroid < 480) {
+
+		glColor3f(1.0, 0.0, 0.0);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(entityPosition.x, entityPosition.y);
+		glVertex2f(asteroid->GetAsteroidPosition().x, asteroid->GetAsteroidPosition().y);
+		glEnd();
+	}
+}
+
+Bullet * Player::FireLasers(void){
+
+	Bullet* laserShot = new Bullet(entityWidth, entityHeight);
+
+	laserShot->ShotStatus(Vector2(500.0f, 500.0f), entityPosition, (entityOrientationAngle + 45));
+
+	return laserShot;
+}
+
+void Player::Collision(Asteroid asteroid){
+
+	float distanceToAsteroid = GetDistanceBtwn2Entities((asteroid.GetEntityPosition));
+
+	if (distanceToAsteroid <= (entityRadius + asteroid.GetEntityRadius)) {
+		
+		isColliding = true;
+		asteroid.SetCollidingStatus(true);
+	}
 }
 //fwd movement function, continuosly warping
 void Player::MoveForward(){
 
-	applyAcceleration(Vector2(movementSpeed, movementSpeed));
+	ApplyAcceleration(Vector2(movementSpeed, movementSpeed));
 }
 
 void Player::RotateLeft() {
 										//rotation to the left function
-	shipOrientationAngle += rotationSpeed;
+	entityOrientationAngle += rotationSpeed;
 	
 }
 
 void Player::RotateRight() {
 										//rotation to the right function
-	shipOrientationAngle -= rotationSpeed;
+	entityOrientationAngle -= rotationSpeed;
 }
 
 void Player::IgniteThruster(bool thrustStatus){
@@ -134,8 +178,8 @@ void Player::DrawThruster() {
 void Player::Render() {
 
 	glLoadIdentity();
-	glTranslatef(shipPosition->x, shipPosition->y, 0.0f);
-	glRotatef(shipOrientationAngle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(entityPosition.x, entityPosition.y, 0.0f);
+	glRotatef(entityOrientationAngle, 0.0f, 0.0f, 1.0f);
 	
 
 	Palette colors = Palette();
